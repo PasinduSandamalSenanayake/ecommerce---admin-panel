@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:ecom_startup/utility/snack_bar_helper.dart';
+import 'dart:developer';
 
 import '../../../models/api_response.dart';
 import '../../../services/http_services.dart';
@@ -48,7 +49,9 @@ class CategoryProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           clearFields();
           SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
-          log('Category added' as num); // change log('Category added')
+          _dataProvider
+              .getAllCategory(); // when add the category update the get view of the category
+          print('Category added'); // change log('Category added')
         } else {
           SnackBarHelper.showErrorSnackBar(
               'Failed to add Category: ${apiResponse.message}');

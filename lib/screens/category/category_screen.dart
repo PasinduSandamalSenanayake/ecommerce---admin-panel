@@ -1,3 +1,5 @@
+import 'package:ecom_startup/main.dart';
+import 'package:ecom_startup/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
@@ -48,7 +50,9 @@ class CategoryScreen extends StatelessWidget {
                           Gap(20),
                           IconButton(
                               onPressed: () {
-                                //TODO: should complete getAllCategory
+                                //refresh getAllCategory
+                                context.dataProvider
+                                    .getAllCategory(showSnack: true);
                               },
                               icon: Icon(Icons.refresh)),
                         ],
