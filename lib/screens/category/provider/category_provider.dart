@@ -67,9 +67,51 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
-  //TODO: should complete updateCategory
+  //updateCategory
+  updatedCategory() async {
+    try {
+      Map<String, dynamic> formDataMap = {
+        'name': categoryNameCtrl.text,
+        'image': categoryForUpdate?.image ?? '',
+      };
 
-  //TODO: should complete submitCategory
+      final FormData form =
+          await createFormData(imgXFile: imgXFile, formData: formDataMap);
+
+      final response = await service.updateItem(
+          endpointUrl: 'categories',
+          itemId: categoryForUpdate?.sId ?? '',
+          itemData: form);
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          clearFields();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          print("category updated");
+          _dataProvider.getAllCategory(); // see the changers
+        } else {
+          SnackBarHelper.showErrorSnackBar(
+              'Failed to update category: ${apiResponse.message}');
+        }
+      } else {
+        SnackBarHelper.showErrorSnackBar(
+            'Error ${response.body?['message'] ?? response.statusText}');
+      }
+    } catch (e) {
+      print(e);
+      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      rethrow;
+    }
+  }
+
+  //completed submitCategory
+  submitCategory() {
+    if (categoryForUpdate != null) {
+      updatedCategory();
+    } else {
+      addCategory();
+    }
+  }
 
   void pickImage() async {
     final ImagePicker picker = ImagePicker();
